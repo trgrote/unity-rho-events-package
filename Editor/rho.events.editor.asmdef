@@ -1,0 +1,18 @@
+{
+    "name": "rho.events.editor",
+    "rootNamespace": "",
+    "references": [
+        "GUID:2f1a0fd19de40d9468960cf963cee18f"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
