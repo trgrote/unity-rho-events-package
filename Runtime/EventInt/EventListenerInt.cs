@@ -1,5 +1,6 @@
-using UnityEngine;
-
-public class EventListenerInt : rho.EventListener<int>
+namespace rho
 {
+    public class EventListenerInt : EventListener<int>
+    {
+    }
 }

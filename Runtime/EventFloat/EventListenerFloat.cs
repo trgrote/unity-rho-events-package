@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class EventListenerFloat : rho.EventListener<float>
+namespace rho
 {
+    public class EventListenerFloat : EventListener<float>
+    {
+    }
 }

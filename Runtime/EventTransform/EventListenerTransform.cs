@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class EventListenerTransform : rho.EventListener<Transform>
+namespace rho
 {
+    public class EventListenerTransform : EventListener<Transform>
+    {
+    }
 }

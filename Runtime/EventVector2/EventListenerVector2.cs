@@ -1,5 +1,8 @@
 using UnityEngine;
 
-public class EventListenerVector2 : rho.EventListener<Vector2>
+namespace rho
 {
+    public class EventListenerVector2 : EventListener<Vector2>
+    {
+    }
 }
