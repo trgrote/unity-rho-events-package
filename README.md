@@ -7,7 +7,7 @@ In Window->Package Manager, `install package from git URL` and use this repo's a
 
 ## Examples
 
-## How to use an Event
+### How to use an Event
 1. Create a new Event by right clicking in the Project->Assets folder and selecting Rho->Events->Event.
 2. Name your new event Scriptable Object.
 3. In a GameObject, add a new Componenent 'EventListener.'
