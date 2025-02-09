@@ -5,11 +5,12 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
 
+// TODO Exclude non-instanceable types (Like System.Void)
 public static class TypeSearcher
 {
     readonly static IEnumerable<Type> AllTypes = AppDomain.CurrentDomain.GetAssemblies()
         .SelectMany(a => a.GetTypes())
-        .Where(t => t.IsPublic);
+        .Where(t => t.IsPublic && t != typeof(void));
 
     readonly static Dictionary<string, Type> BuiltInTypes = GetBuiltInTypes();
 
@@ -24,18 +25,15 @@ public static class TypeSearcher
 
         using var provider = new CSharpCodeProvider();
 
-        foreach (var type in mscorlib.DefinedTypes)
+        foreach (var type in mscorlib.DefinedTypes.Where(t => string.Equals(t.Namespace, "System") && t != typeof(void)))
         {
-            if (string.Equals(type.Namespace, "System"))
-            {
-                var typeRef = new CodeTypeReference(type);
-                var csTypeName = provider.GetTypeOutput(typeRef);
+            var typeRef = new CodeTypeReference(type);
+            var csTypeName = provider.GetTypeOutput(typeRef);
 
-                // Ignore qualified types.
-                if (csTypeName.IndexOf('.') == -1)
-                {
-                    builtIntypes[csTypeName] = type;
-                }
+            // Ignore qualified types.
+            if (csTypeName.IndexOf('.') == -1)
+            {
+                builtIntypes[csTypeName] = type;
             }
         }
 
