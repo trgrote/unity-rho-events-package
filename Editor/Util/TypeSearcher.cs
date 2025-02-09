@@ -67,4 +67,10 @@ public static class TypeSearcher
     }
 
     public static bool IsBuiltInType(Type type) => BuiltInTypes.ContainsValue(type);
+
+    public static bool TryGetBuiltInType(Type type, out string builtInName)
+    {
+        builtInName = BuiltInTypes.FirstOrDefault(x => x.Value == type).Key;
+        return !string.IsNullOrEmpty(builtInName);
+    }
 }
