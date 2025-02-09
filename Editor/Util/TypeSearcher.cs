@@ -5,7 +5,6 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
 
-// TODO Exclude non-instanceable types (Like System.Void)
 public static class TypeSearcher
 {
     readonly static IEnumerable<Type> AllTypes = AppDomain.CurrentDomain.GetAssemblies()

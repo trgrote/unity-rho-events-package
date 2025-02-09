@@ -29,9 +29,8 @@ namespace rho
             errorString = "";
             isValid = true;
 
-            if (_typeName == null || _typeName.Length == 0)
+            if (string.IsNullOrEmpty(_typeName))
             {
-                errorString = "Please Provide Type";
                 isValid = false;
                 return;
             }
@@ -43,14 +42,24 @@ namespace rho
             {
                 var type = types.First();
                 helpString = $"Creates a new Event<{type.FullName}> type";
+
+                if (_createEditorScript && !CanAutoPopulateEditor(type))
+                {
+                    errorString = "Warning: You must implment the GetTestParam() method in the editor script.";
+                }
             }
             else if (types.Count() > 1)
             {
-                errorString = $"Found {types.Count()} Types: ";
+                errorString = $"Found {types.Count()} Types";
                 if (types.Count() < 10)
                 {
-                    errorString += string.Join(',', types.Select(t => t.FullName));
+                    errorString += ": " + string.Join(",", types.Select(t => t.FullName));
                 }
+                isValid = false;
+            }
+            else
+            {
+                errorString = "Cannot find type";
                 isValid = false;
             }
         }
@@ -125,6 +134,11 @@ namespace rho
             }
 
             return type.Name;
+        }
+
+        bool CanAutoPopulateEditor(Type type)
+        {
+            return type.IsEnum || type.IsSubclassOf(typeof(UnityEngine.Object));
         }
 
         #endregion
