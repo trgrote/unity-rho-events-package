@@ -198,7 +198,7 @@ public class {eventClassName} : rho.Event<{fullTypeName}>
     }}
 }}";
 
-            if (type.IsSubclassOf(typeof(System.Enum)))
+            if (type.IsEnum)
             {
                 baseClassName = "EventEnumEditor";
                 classBody = "{\n}";
