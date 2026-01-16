@@ -186,7 +186,7 @@ namespace rho
 
         string GetEventScriptContents(string eventClassName, string fullTypeName)
         {
-            return $@"[UnityEngine.CreateAssetMenu(fileName = ""{eventClassName}"", menuName = ""Events/Event<{fullTypeName}>"")]
+            return $@"[UnityEngine.CreateAssetMenu(fileName = ""New{eventClassName}"", menuName = ""Events/Event<{fullTypeName}>"")]
 public class {eventClassName} : rho.Event<{fullTypeName}>
 {{
 }}";
