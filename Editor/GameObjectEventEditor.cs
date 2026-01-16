@@ -4,7 +4,7 @@ using UnityEngine;
 namespace rho
 {
     [CustomEditor(typeof(GameObjectEvent))]
-    public class GameObjectEventEditor : EventUnityObjectEditor<GameObject>
+    public class GameObjectEventEditor : UnityObjectEventEditor<GameObject>
     {
     }
 }

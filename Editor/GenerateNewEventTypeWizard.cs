@@ -219,7 +219,7 @@ public class {eventClassName} : rho.Event<{fullTypeName}>
             }
             else if (type.IsSubclassOf(typeof(UnityEngine.Object)))
             {
-                baseClassName = "EventUnityObjectEditor";
+                baseClassName = "UnityObjectEventEditor";
                 classBody = "{\n}";
             }
 
