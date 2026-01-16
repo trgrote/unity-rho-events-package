@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace rho
 {
-    public class EventEnumEditor<T> : EventEditor<T> where T : System.Enum
+    public class EnumEventEditor<T> : EventEditor<T> where T : System.Enum
     {
         protected T _testParam;
 
