@@ -83,7 +83,7 @@ namespace rho
         {
             var fullTypeName = type.FullName;
             var prettyTypeName = GetPrettyTypeName(type);
-            var eventClassName = $"Event{prettyTypeName}";
+            var eventClassName = $"{prettyTypeName}Event";
 
             // Create new Folder
             var folderGUID = AssetDatabase.CreateFolder(GetSelectedAssetFolder(), eventClassName);
