@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace rho
 {
-    [CreateAssetMenu(menuName = "Rho/Events/Event")]
+    [CreateAssetMenu(fileName = "NewEvent", menuName = "Rho/Events/Event")]
     public class Event : ScriptableObject
     {
         List<EventListener> _listeners = new List<EventListener>();
