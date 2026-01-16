@@ -223,7 +223,9 @@ public class {eventClassName} : rho.Event<{fullTypeName}>
                 classBody = "{\n}";
             }
 
-            return $@"[UnityEditor.CustomEditor(typeof({eventClassName}))]
+            return $@"using UnityEditor;
+
+[UnityEditor.CustomEditor(typeof({eventClassName}))]
 public class {editorClassName} : rho.{baseClassName}<{fullTypeName}>
 {classBody}";
         }
