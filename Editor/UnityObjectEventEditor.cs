@@ -2,7 +2,7 @@ using UnityEditor;
 
 namespace rho
 {
-    public class UnityObjectEventEditor<T> : EventEditor<T> where T : UnityEngine.Object
+    public abstract class UnityObjectEventEditor<T> : EventEditor<T> where T : UnityEngine.Object
     {
         T _testParam;
 
