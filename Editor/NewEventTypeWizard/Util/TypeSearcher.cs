@@ -5,69 +5,72 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.CSharp;
 
-public static class TypeSearcher
+namespace rho
 {
-    readonly static IEnumerable<Type> AllTypes = AppDomain.CurrentDomain.GetAssemblies()
-        .SelectMany(a => a.GetTypes())
-        .Where(t => t.IsPublic && t != typeof(void));
-
-    readonly static Dictionary<string, Type> BuiltInTypes = GetBuiltInTypes();
-
-    // This returns like "int" => System.Int32
-    static Dictionary<string, Type> GetBuiltInTypes()
+    public static class TypeSearcher
     {
-        var builtIntypes = new Dictionary<string, Type>();
+        readonly static IEnumerable<Type> AllTypes = AppDomain.CurrentDomain.GetAssemblies()
+            .SelectMany(a => a.GetTypes())
+            .Where(t => t.IsPublic && t != typeof(void));
 
-        // Resolve reference to mscorlib.
-        // int is an arbitrarily chosen type in mscorlib
-        var mscorlib = Assembly.GetAssembly(typeof(int));
+        readonly static Dictionary<string, Type> BuiltInTypes = GetBuiltInTypes();
 
-        using var provider = new CSharpCodeProvider();
-
-        foreach (var type in mscorlib.DefinedTypes.Where(t => string.Equals(t.Namespace, "System") && t != typeof(void)))
+        // This returns like "int" => System.Int32
+        static Dictionary<string, Type> GetBuiltInTypes()
         {
-            var typeRef = new CodeTypeReference(type);
-            var csTypeName = provider.GetTypeOutput(typeRef);
+            var builtIntypes = new Dictionary<string, Type>();
 
-            // Ignore qualified types.
-            if (csTypeName.IndexOf('.') == -1)
+            // Resolve reference to mscorlib.
+            // int is an arbitrarily chosen type in mscorlib
+            var mscorlib = Assembly.GetAssembly(typeof(int));
+
+            using var provider = new CSharpCodeProvider();
+
+            foreach (var type in mscorlib.DefinedTypes.Where(t => string.Equals(t.Namespace, "System") && t != typeof(void)))
             {
-                builtIntypes[csTypeName] = type;
+                var typeRef = new CodeTypeReference(type);
+                var csTypeName = provider.GetTypeOutput(typeRef);
+
+                // Ignore qualified types.
+                if (csTypeName.IndexOf('.') == -1)
+                {
+                    builtIntypes[csTypeName] = type;
+                }
             }
+
+            return builtIntypes;
         }
 
-        return builtIntypes;
-    }
-
-    public static Type[] SearchForType(string typeName)
-    {
-        // If the typeName contains a '.' then search with namespace, else just search by name
-        bool includeNamespaces = typeName.Contains('.');
-        bool caseSensitive = typeName.Any(char.IsUpper);
-
-        // Include built in types if the search doesn't include namespaces and is case insensitive
-        if (!includeNamespaces && !caseSensitive)
+        public static Type[] SearchForType(string typeName)
         {
-            if (BuiltInTypes.ContainsKey(typeName))
+            // If the typeName contains a '.' then search with namespace, else just search by name
+            bool includeNamespaces = typeName.Contains('.');
+            bool caseSensitive = typeName.Any(char.IsUpper);
+
+            // Include built in types if the search doesn't include namespaces and is case insensitive
+            if (!includeNamespaces && !caseSensitive)
             {
-                return new [] { BuiltInTypes[typeName] };
+                if (BuiltInTypes.ContainsKey(typeName))
+                {
+                    return new [] { BuiltInTypes[typeName] };
+                }
             }
+
+            var stringComparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
+            bool matchesTypeName(Type t) =>
+                typeName.Equals(includeNamespaces ? t.FullName : t.Name, stringComparison);
+
+            return AllTypes
+                .Where(matchesTypeName)
+                .ToArray();
         }
 
-        var stringComparison = caseSensitive ? StringComparison.Ordinal : StringComparison.OrdinalIgnoreCase;
-        bool matchesTypeName(Type t) =>
-            typeName.Equals(includeNamespaces ? t.FullName : t.Name, stringComparison);
+        public static bool IsBuiltInType(Type type) => BuiltInTypes.ContainsValue(type);
 
-        return AllTypes
-            .Where(matchesTypeName)
-            .ToArray();
-    }
-
-    public static bool IsBuiltInType(Type type) => BuiltInTypes.ContainsValue(type);
-
-    public static bool TryGetBuiltInType(Type type, out string builtInName)
-    {
-        builtInName = BuiltInTypes.FirstOrDefault(x => x.Value == type).Key;
-        return !string.IsNullOrEmpty(builtInName);
+        public static bool TryGetBuiltInType(Type type, out string builtInName)
+        {
+            builtInName = BuiltInTypes.FirstOrDefault(x => x.Value == type).Key;
+            return !string.IsNullOrEmpty(builtInName);
+        }
     }
 }
