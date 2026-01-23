@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace rho
 {
-    [CreateAssetMenu(fileName = "NewIntEvent", menuName = "Rho/Events/Event<int>")]
+    [CreateAssetMenu(fileName = "New Int Event", menuName = "Rho/Events/Event<int>")]
     public class IntEvent : Event<int>
     {
     }
