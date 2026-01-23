@@ -92,6 +92,7 @@ namespace rho
             // Create new Event Script, inside folder
             var eventScriptName = $"{folderName}/{eventClassName}.cs";
             CreateNewScript(eventScriptName, GetEventScriptContents(
+                prettyTypeName: prettyTypeName,
                 eventClassName: eventClassName, 
                 fullTypeName: fullTypeName
             ));
@@ -184,9 +185,9 @@ namespace rho
             sw.WriteLine(contents);
         }
 
-        string GetEventScriptContents(string eventClassName, string fullTypeName)
+        string GetEventScriptContents(string prettyTypeName, string eventClassName, string fullTypeName)
         {
-            return $@"[UnityEngine.CreateAssetMenu(fileName = ""New{eventClassName}"", menuName = ""Events/Event<{fullTypeName}>"")]
+            return $@"[UnityEngine.CreateAssetMenu(fileName = ""New {prettyTypeName} Event"", menuName = ""Events/Event<{fullTypeName}>"")]
 public class {eventClassName} : rho.Event<{fullTypeName}>
 {{
 }}";
